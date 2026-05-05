@@ -1,10 +1,11 @@
 
 using Microsoft.EntityFrameworkCore;
 using ProductService.Data;
+using ProductService.Kafka;
 using ProductService.Mapping;
 using ProductService.Repositories;
 using ProductService.Repositories.Base;
-using UserService.Services;
+using ProductService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,6 +59,15 @@ builder.Services.AddCors(client =>
               .AllowAnyMethod();
 });
 });
+
+
+// DI Kafka Consumer 
+// di bằng host service vì nó implement background service nên sẽ tự động chạy khi ứng dụng khởi động
+//
+builder.Services.AddHostedService<KafkaConsumer>();
+
+// DI Cloud
+builder.Services.AddScoped<ICloudImageService, CloudImageService>();
 
 var app = builder.Build();
 

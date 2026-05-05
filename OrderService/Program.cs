@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using OrderService.Data;
+using OrderService.Kafka;
 using OrderService.Mapping;
 using OrderService.Repositories;
 using OrderService.Repositories.Base;
@@ -38,15 +39,19 @@ var Issuer = builder.Configuration["jwt:Issuer"];
 var Audience = builder.Configuration["jwt:Audience"];
 
 
+
 // DI HTTPCLIENT 
 builder.Services.AddHttpClient("ProductService", client =>
 {
     // client.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ProductService"]);
-    client.BaseAddress = new Uri("https://localhost:7138"); 
+    // client.BaseAddress = new Uri("https://localhost:7138"); 
+    client.BaseAddress = new Uri("https://localhost:7175/product-api/"); 
 });
 
 builder.Services.AddAuthorization();
 
+// DI Kafka Producer
+builder.Services.AddScoped<IKafkaProducer, KafkaProducer>();
 
 var app = builder.Build();
 

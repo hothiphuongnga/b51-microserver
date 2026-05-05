@@ -18,6 +18,8 @@
     <ProjectReference Include="..\OrderService\OrderService.csproj" />
     <ProjectReference Include="..\ProductService\ProductService.csproj" />
     <ProjectReference Include="..\UserService\UserService.csproj" />
+    <ProjectReference Include="..\Gateway\Gateway.csproj" />
+
 
   </ItemGroup>
 

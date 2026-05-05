@@ -5,11 +5,12 @@ using ProductService.Repositories;
 using ProductService.Repositories.Base;
 using ProductService.Services.Base;
 
-namespace UserService.Services;
+namespace ProductService.Services;
 
 public interface IProductService : IServiceBase<Product, ProductDto>
 {
     Task<ResponseEntity> UpdateStockAsync(int id, int quantity);
+    Task<ResponseEntity> UploadImageAsync(IFormFile file);
 }
 
 public class ProductServicee : ServiceBase<Product, ProductDto>, IProductService
@@ -18,12 +19,14 @@ public class ProductServicee : ServiceBase<Product, ProductDto>, IProductService
     private readonly IProductRepository _ProductRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly ICloudImageService _cloudImageService;
 
-    public ProductServicee(IProductRepository ProductRepository, IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper,ProductRepository)
+    public ProductServicee(IProductRepository ProductRepository, IUnitOfWork unitOfWork, IMapper mapper, ICloudImageService cloudImageService) : base(unitOfWork, mapper,ProductRepository)
     {
         _ProductRepository = ProductRepository;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _cloudImageService = cloudImageService;
     }
 
     public async Task<ResponseEntity> UpdateStockAsync(int id, int quantity)
@@ -45,5 +48,11 @@ public class ProductServicee : ServiceBase<Product, ProductDto>, IProductService
         }
 
 
+    }
+
+    public async Task<ResponseEntity> UploadImageAsync(IFormFile file)
+    {
+        string imageUrl = await _cloudImageService.UploadImageAsync(file.OpenReadStream(), file.FileName);
+        return ResponseEntity.Ok(imageUrl);
     }
 }

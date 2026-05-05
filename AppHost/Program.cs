@@ -4,6 +4,8 @@ var builder = DistributedApplication.CreateBuilder(args);
 var orderService = builder.AddProject<Projects.OrderService>("OrderService");
 var userService = builder.AddProject<Projects.UserService>("UserService");
 var productService = builder.AddProject<Projects.ProductService>("ProductService");
+var gateway = builder.AddProject<Projects.Gateway>("Gateway");
+
 
 
 

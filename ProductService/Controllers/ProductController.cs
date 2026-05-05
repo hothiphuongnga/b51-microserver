@@ -2,7 +2,7 @@ namespace ProductService.Controllers
 {
 
     using Microsoft.AspNetCore.Mvc;
-    using UserService.Services;
+    using ProductService.Services;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -17,6 +17,15 @@ namespace ProductService.Controllers
         public async Task<IActionResult> Put(int id, int quantity)
         {
             return await _service.UpdateStockAsync(id, quantity);
+        }
+
+        // viết  nhanh api upload hình ảnh
+
+
+        [HttpPost("upload-image")]
+        public async Task<IActionResult> UploadImage(IFormFile file)
+        {
+            return await _service.UploadImageAsync(file);
         }
 
     }
